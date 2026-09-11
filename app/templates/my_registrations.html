@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}我的报名{% endblock %}
+{% block content %}
+<h2>我的报名</h2>
+{% if rows %}
+<table class="tbl">
+  <thead><tr><th>活动</th><th>地点</th><th>开始时间</th><th>报名状态</th><th>报名时间</th></tr></thead>
+  <tbody>
+  {% for r in rows %}
+    <tr>
+      <td><a href="{{ url_for('activity.detail', aid=r.id) }}">{{ r.title }}</a></td>
+      <td>{{ r.location }}</td>
+      <td>{{ r.start_time }}</td>
+      <td>{{ '有效' if r.reg_status == 'active' else '已取消' }}</td>
+      <td>{{ r.reg_time }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">还没有报名任何活动。<a href="{{ url_for('activity.index') }}">去看看</a></p>
+{% endif %}
+{% endblock %}

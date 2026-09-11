@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}报名名单{% endblock %}
+{% block content %}
+<h2>{{ act.title }} — 报名名单</h2>
+<p class="hint">容量 {{ act.capacity }}，当前有效报名 {{ act.taken if act.taken is defined else '—' }} 人。</p>
+{% if rows %}
+<table class="tbl">
+  <thead><tr><th>姓名</th><th>账号</th><th>状态</th><th>报名时间</th></tr></thead>
+  <tbody>
+  {% for r in rows %}
+    <tr>
+      <td>{{ r.display_name }}</td>
+      <td>{{ r.username }}</td>
+      <td>{{ '有效' if r.status == 'active' else '已取消' }}</td>
+      <td>{{ r.created_at }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">暂无报名记录。</p>
+{% endif %}
+<p><a href="{{ url_for('activity.mine') }}">返回我的活动</a></p>
+{% endblock %}

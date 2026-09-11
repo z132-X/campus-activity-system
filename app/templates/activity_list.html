@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}活动列表{% endblock %}
+{% block content %}
+<h2>可报名活动</h2>
+{% if acts %}
+<table class="tbl">
+  <thead>
+    <tr><th>活动</th><th>地点</th><th>开始时间</th><th>报名截止</th><th>名额</th><th></th></tr>
+  </thead>
+  <tbody>
+  {% for a in acts %}
+    <tr>
+      <td>{{ a.title }}</td>
+      <td>{{ a.location }}</td>
+      <td>{{ a.start_time }}</td>
+      <td>{{ a.deadline }}</td>
+      <td>{{ a.taken }} / {{ a.capacity }}</td>
+      <td><a class="btn" href="{{ url_for('activity.detail', aid=a.id) }}">查看</a></td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">当前没有可报名的活动。</p>
+{% endif %}
+{% endblock %}

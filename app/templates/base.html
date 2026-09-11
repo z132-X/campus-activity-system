@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}校园活动管理系统{% endblock %}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<nav class="nav">
+  <span class="brand">校园活动管理系统 <span class="ver">V1.0</span></span>
+  <span class="nav-links">
+  {% if session.user_id %}
+    <span class="who">{{ session.name }}（{{ '教师' if session.role == 'teacher' else '学生' }}）</span>
+    <a href="{{ url_for('activity.index') }}">活动列表</a>
+    {% if session.role == 'student' %}
+      <a href="{{ url_for('registration.my') }}">我的报名</a>
+    {% else %}
+      <a href="{{ url_for('activity.publish') }}">发布活动</a>
+      <a href="{{ url_for('activity.mine') }}">我的活动</a>
+    {% endif %}
+    <a href="{{ url_for('auth.logout') }}">退出</a>
+  {% else %}
+    <a href="{{ url_for('auth.login') }}">登录</a>
+    <a href="{{ url_for('auth.register') }}">注册</a>
+  {% endif %}
+  </span>
+</nav>
+
+<main class="wrap">
+  {% with msgs = get_flashed_messages(with_categories=true) %}
+    {% if msgs %}
+      <ul class="flashes">
+      {% for cat, msg in msgs %}
+        <li class="flash {{ cat }}">{{ msg }}</li>
+      {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="foot">软件工程实验一 · 基于工程意图的软件迭代开发</footer>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}发布活动{% endblock %}
+{% block content %}
+<h2>发布活动</h2>
+<form method="post" class="form">
+  <label>标题<input name="title" required></label>
+  <label>地点<input name="location" required></label>
+  <label>开始时间<input type="datetime-local" name="start_time" required></label>
+  <label>结束时间<input type="datetime-local" name="end_time" required></label>
+  <label>报名截止<input type="datetime-local" name="deadline" required></label>
+  <label>容量<input type="number" name="capacity" min="1" required></label>
+  <label>描述<textarea name="description" rows="4"></textarea></label>
+  <button type="submit">发布</button>
+</form>
+<p class="hint">报名截止不能晚于活动开始时间；容量必须为正整数。</p>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}我的活动{% endblock %}
+{% block content %}
+<h2>我发布的活动</h2>
+{% if acts %}
+<table class="tbl">
+  <thead>
+    <tr><th>活动</th><th>开始时间</th><th>报名情况</th><th>状态</th><th>操作</th></tr>
+  </thead>
+  <tbody>
+  {% for a in acts %}
+  <tr>
+    <td>{{ a.title }}</td>
+    <td>{{ a.start_time }}</td>
+    <td>{{ a.taken }} / {{ a.capacity }}</td>
+    <td>{% if a.status == 'published' %}报名中{% elif a.status == 'closed' %}已关闭{% else %}已取消{% endif %}</td>
+    <td class="ops">
+      <a class="btn" href="{{ url_for('activity.participants', aid=a.id) }}">名单</a>
+      {% if a.status == 'published' %}
+      <form method="post" action="{{ url_for('activity.close', aid=a.id) }}">
+        <button class="btn" type="submit">关闭报名</button>
+      </form>
+      <form method="post" action="{{ url_for('activity.cancel', aid=a.id) }}">
+        <button class="btn warn" type="submit">取消活动</button>
+      </form>
+      {% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">还没有发布活动。<a href="{{ url_for('activity.publish') }}">去发布</a></p>
+{% endif %}
+{% endblock %}

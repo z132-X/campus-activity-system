@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}{{ act.title }}{% endblock %}
+{% block content %}
+<h2>{{ act.title }}</h2>
+
+<dl class="detail">
+  <dt>发布教师</dt><dd>{{ act.publisher_name }}</dd>
+  <dt>地点</dt><dd>{{ act.location }}</dd>
+  <dt>活动时间</dt><dd>{{ act.start_time }} ~ {{ act.end_time }}</dd>
+  <dt>报名截止</dt><dd>{{ act.deadline }}</dd>
+  <dt>名额</dt><dd>{{ act.taken }} / {{ act.capacity }}（剩余 {{ act.capacity - act.taken }}）</dd>
+  <dt>状态</dt>
+  <dd>{% if act.status == 'published' %}报名中{% elif act.status == 'closed' %}报名已关闭{% else %}已取消{% endif %}</dd>
+  <dt>活动描述</dt><dd>{{ act.description or '（无）' }}</dd>
+</dl>
+
+{% if session.role == 'student' %}
+  {% if mine and mine.status == 'active' %}
+    <p class="ok">你已报名该活动。</p>
+    <form method="post" action="{{ url_for('registration.quit_activity', aid=act.id) }}">
+      <button class="btn warn" type="submit">取消报名</button>
+    </form>
+  {% else %}
+    <form method="post" action="{{ url_for('registration.join', aid=act.id) }}">
+      <button class="btn primary" type="submit">报名</button>
+    </form>
+  {% endif %}
+{% endif %}
+
+<p><a href="{{ url_for('activity.index') }}">返回列表</a></p>
+{% endblock %}
